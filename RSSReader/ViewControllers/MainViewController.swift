@@ -1,12 +1,13 @@
 import UIKit
 import SnapKit
 
-class MainViewController: UIViewController {
-    
+class MainViewController: UIViewController{
+
     private let presenter = MainPresenter(mainService: MainService())
     
     private let tableView = UITableView()
     
+    private var news = [NewsModel]()
     private let identifier = "NewsTableViewCell"
     
     override func viewDidLoad() {
@@ -31,10 +32,11 @@ class MainViewController: UIViewController {
     }
     
     private func setupElements() {
-        view.backgroundColor = .green
+        view.backgroundColor = .white
         
         tableView.backgroundColor = UIColor.clear
-        tableView.rowHeight = 45
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 100
         tableView.register(NewsTableViewCell.self, forCellReuseIdentifier: identifier)
         tableView.delegate = self
         tableView.dataSource = self
@@ -51,6 +53,12 @@ class MainViewController: UIViewController {
 
 extension MainViewController: MainPresenterDelegate {
     
+    func updateTableView(news: [NewsModel]) {
+        self.news = news
+        tableView.reloadData()
+    }
+    
+    
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
@@ -58,12 +66,27 @@ extension MainViewController: MainPresenterDelegate {
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return news.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier) as! NewsTableViewCell
+        
+        cell.delegate = self
+        cell.setElements(news: news[indexPath.row])
+        
         return cell
+    }
+    
+    
+}
+
+// MARK: - NewsTableViewCellDelegate
+
+extension MainViewController: NewsTableViewCellDelegate {
+    
+    func descriptionHidden() {
+        tableView.reloadData()
     }
     
     

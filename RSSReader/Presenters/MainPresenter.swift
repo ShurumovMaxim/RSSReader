@@ -1,7 +1,7 @@
 import Foundation
 
 protocol MainPresenterDelegate: class {
-    
+    func updateTableView(news: [NewsModel])
 }
 
 class MainPresenter {
@@ -12,7 +12,10 @@ class MainPresenter {
     
     init(mainService: MainService){
         self.mainService = mainService
-        mainService.getHabrXML()
+        
+        mainService.getHabrXML { (news) in
+            self.delegate?.updateTableView(news: news)
+        }
     }
     
     func setDelegate(_ mainPresenterDelegate: MainPresenterDelegate?){

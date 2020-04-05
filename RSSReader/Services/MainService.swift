@@ -4,13 +4,18 @@ import SwiftyXMLParser
 
 class MainService {
     
-    func getHabrXML() {
+    func getHabrXML(completion: @escaping ([NewsModel]) -> ()) {
         Alamofire.request("https://habr.com/rss/hubs/all").responseData { response in
             if let data = response.data {
                 let xml = XML.parse(data)
+                
+                var newsItems = [NewsModel]()
                 for item in xml.rss.channel.item {
-                    print(item.title.text)
+                    let news = NewsModel(xml: item)
+                    newsItems.append(news)
                 }
+                
+                completion(newsItems)
             }
         }
     }
