@@ -78,7 +78,7 @@ class NewsTableViewCell: UITableViewCell {
             iconImageView.image = nil
         }
         titleLabel.text = news.title
-        sourceLabel.text = news.source
+        sourceLabel.text = news.source.rawValue
 //        dateLabel.text = news.date
         descriptionLabel.text = news.description
     }
@@ -110,7 +110,8 @@ class NewsTableViewCell: UITableViewCell {
         news?.descriptionIsHidden = isHidden
         
         descriptionLabel.snp.remakeConstraints { (make) in
-            make.top.equalTo(iconImageView.snp.bottom).offset(10)
+            make.top.greaterThanOrEqualTo(iconImageView.snp.bottom).offset(10)
+            make.top.greaterThanOrEqualTo(dateLabel.snp.bottom).offset(10)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
             make.bottom.equalToSuperview().offset(-10)

@@ -13,9 +13,15 @@ class MainPresenter {
     init(mainService: MainService){
         self.mainService = mainService
         
-        mainService.getHabrXML { (news) in
+        mainService.getNews { (news) in
             self.delegate?.updateTableView(news: news)
         }
+//        mainService.getHabrNews { (news) in
+////            self.delegate?.updateTableView(news: news)
+//        }
+//        mainService.getRedditNews { (news) in
+//            self.delegate?.updateTableView(news: news)
+//        }
     }
     
     func setDelegate(_ mainPresenterDelegate: MainPresenterDelegate?){
