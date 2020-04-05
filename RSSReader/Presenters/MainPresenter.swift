@@ -7,6 +7,7 @@ protocol MainPresenterDelegate: class {
 class MainPresenter {
     
     weak private var delegate: MainPresenterDelegate?
+    
     private let mainService: MainService
     
     init(mainService: MainService){
