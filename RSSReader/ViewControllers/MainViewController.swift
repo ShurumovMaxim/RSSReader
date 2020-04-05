@@ -2,7 +2,7 @@ import UIKit
 
 class MainViewController: UIViewController {
     
-    private let presenter = MainPresenter()
+    private let presenter = MainPresenter(mainService: MainService())
     
     override func viewDidLoad() {
         super.viewDidLoad()
