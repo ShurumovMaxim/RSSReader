@@ -1,0 +1,34 @@
+PODS:
+  - Alamofire (4.9.1)
+  - Kingfisher (5.13.2):
+    - Kingfisher/Core (= 5.13.2)
+  - Kingfisher/Core (5.13.2)
+  - SnapKit (5.0.1)
+  - SwiftSoup (2.3.1)
+  - SwiftyXMLParser (5.0.0)
+
+DEPENDENCIES:
+  - Alamofire
+  - Kingfisher
+  - SnapKit (~> 5.0.0)
+  - SwiftSoup
+  - SwiftyXMLParser
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - Kingfisher
+    - SnapKit
+    - SwiftSoup
+    - SwiftyXMLParser
+
+SPEC CHECKSUMS:
+  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  Kingfisher: d342c8354c10c3d85a27d6d4c42c41285924b898
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  SwiftSoup: e5af192bc99be8398d5f93e15ff6a3c80ba81de1
+  SwiftyXMLParser: 5ebb8793192f403fa8cc691045143906122a7a75
+
+PODFILE CHECKSUM: fdcb8a3b010e3c9a3ea23e6ffd58e626745a8ec1
+
+COCOAPODS: 1.8.4
