@@ -12,8 +12,13 @@ class MainService {
             
             self.getRedditNews() { (redditNews) in
                 allNews += redditNews
-                allNews = allNews.sorted(by: { $0.date!.compare($1.date!) == .orderedDescending})
-                completion(allNews)
+                
+                self.getMeduzaNews { (meduzaNews) in
+                    allNews += meduzaNews
+                    
+                    allNews = allNews.sorted(by: { ($0.date ?? .distantPast) > ($1.date ?? .distantPast) } )
+                    completion(allNews)
+                }
             }
         }
     }
@@ -42,6 +47,22 @@ class MainService {
                 var newsItems = [NewsModel]()
                 for item in xml.feed.entry {
                     let news = NewsModel(newsSource: .reddit, xml: item)
+                    newsItems.append(news)
+                }
+                
+                completion(newsItems)
+            }
+        }
+    }
+    
+    func getMeduzaNews(completion: @escaping ([NewsModel]) -> ()) {
+        Alamofire.request("https://meduza.io/rss/podcasts/meduza-v-kurse").responseData { response in
+            if let data = response.data {
+                let xml = XML.parse(data)
+                
+                var newsItems = [NewsModel]()
+                for item in xml.rss.channel.item {
+                    let news = NewsModel(newsSource: .meduza, xml: item)
                     newsItems.append(news)
                 }
                 
