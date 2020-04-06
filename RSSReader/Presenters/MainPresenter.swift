@@ -16,12 +16,6 @@ class MainPresenter {
         mainService.getNews { (news) in
             self.delegate?.updateTableView(news: news)
         }
-//        mainService.getHabrNews { (news) in
-////            self.delegate?.updateTableView(news: news)
-//        }
-//        mainService.getRedditNews { (news) in
-//            self.delegate?.updateTableView(news: news)
-//        }
     }
     
     func setDelegate(_ mainPresenterDelegate: MainPresenterDelegate?){

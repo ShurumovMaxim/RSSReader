@@ -4,6 +4,7 @@ import SwiftSoup
 enum NewsSource: String {
     case habr = "Хабр"
     case reddit = "Reddit"
+    case meduza = "Meduza"
 }
 
 class NewsModel {
@@ -23,11 +24,7 @@ class NewsModel {
             
             if let descriptionXml = xml["description"].text,
                 let descriptionDocument: Document = try? SwiftSoup.parse(descriptionXml) {
-                if let elements = try? descriptionDocument.select("img").array(),
-                    let firstElement = elements.first,
-                    let url = try? firstElement.attr("src") {
-                    imageUrl = url
-                }
+                imageUrl = ParseUtils.getImgSrc(text: descriptionDocument)
 
                 if let text = try? descriptionDocument.text() {
                     description = text.withoutReadMore
@@ -35,34 +32,29 @@ class NewsModel {
             }
             
             source = newsSource
-            
-            let dateString = xml.pubDate.text ?? ""
-            let dateFormatter = DateFormatter()
-            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-            dateFormatter.dateFormat = "E, d MMM yyyy HH:mm:ss Z"
-            let date = dateFormatter.date(from: dateString)
-            self.date = date
+            date = DateUtils.getDateFromString(dateString: xml.pubDate.text ?? "",
+                                               formate: "E, d MMM yyyy HH:mm:ss Z")
             
         case .reddit:
             title = xml.title.text ?? ""
             
             if let descriptionXml = xml.content.text,
                 let descriptionDocument: Document = try? SwiftSoup.parse(descriptionXml) {
-                if let elements = try? descriptionDocument.select("img").array(),
-                    let firstElement = elements.first,
-                    let url = try? firstElement.attr("src") {
-                    imageUrl = url
-                }
+                imageUrl = ParseUtils.getImgSrc(text: descriptionDocument)
             }
             
             source = newsSource
+            date = DateUtils.getDateFromString(dateString:  xml.updated.text ?? "",
+                                               formate: "yyyy-MM-dd'T'HH:mm:ssZ")
             
-            let dateString = xml.updated.text ?? ""
-            let dateFormatter = DateFormatter()
-            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-            let date = dateFormatter.date(from: dateString)
-            self.date = date
+        case .meduza:
+            title = xml.title.text ?? ""
+            description = xml["description"].text ?? ""
+            imageUrl = xml["itunes:image"].attributes["href"] ?? ""
+            source = newsSource
+            date = DateUtils.getDateFromString(dateString: xml.pubDate.text ?? "",
+                                               formate: "E, d MMM yyyy HH:mm:ss Z")
+
         }
         
     }

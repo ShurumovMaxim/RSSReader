@@ -75,11 +75,18 @@ class NewsTableViewCell: UITableViewCell {
         if let url = URL(string: news.imageUrl) {
             iconImageView.kf.setImage(with: url)
         } else {
-            iconImageView.image = nil
+            switch news.source {
+            case .habr:
+                iconImageView.image = #imageLiteral(resourceName: "habr")
+            case .reddit:
+                iconImageView.image = #imageLiteral(resourceName: "reddit")
+            case .meduza:
+                iconImageView.image = #imageLiteral(resourceName: "meduza")
+            }
         }
         titleLabel.text = news.title
         sourceLabel.text = news.source.rawValue
-//        dateLabel.text = news.date
+        dateLabel.text = DateUtils.getStringFromDate(date: news.date, formate: "MM-dd-yyyy HH:mm") 
         descriptionLabel.text = news.description
     }
 
